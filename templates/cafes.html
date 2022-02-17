@@ -1,4 +1,8 @@
 {% extends 'bootstrap/base.html' %}
+{% block styles %}
+  {{super()}}
+  <link rel="stylesheet" href="{{url_for('.static', filename='css/styles.css')}}">
+{% endblock %}
 
 {% block title %}Restaurants{% endblock %}
 
@@ -17,6 +21,24 @@
   	  </table>
 
       <p><a href="#">Return to index page</a></p>
+
+      <table class="table">
+        <tbody>
+          {% if cafes %}
+            {% for place in cafes %}
+              <tr>
+                {% for cafe in place %}
+                  <td>{{ cafe }}</td>
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td>No places for you friend... :(</td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
 
     </div>
   </div>

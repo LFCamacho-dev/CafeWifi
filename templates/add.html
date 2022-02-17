@@ -1,4 +1,8 @@
 {% extends 'bootstrap/base.html' %}
+{% block styles %}
+  {{super()}}
+  <link rel="stylesheet" href="{{url_for('.static', filename='css/styles.css')}}">
+{% endblock %}
 
 {% block title %}Add A New Cafe{% endblock %}
 
@@ -12,7 +16,73 @@
       <!-- This is where your WTForm will go -->
 
 	  <p class="space-above"><a href="#">See all cafes</a></p>
-
+    <form action="{{ url_for('add_cafe') }}" method="POST">
+      {{ form.csrf_token }}
+      <div class="form-group">
+        {{form.cafe.label}}
+        {{form.cafe(class='form-control')}}
+        {% if form.cafe.errors %}
+          {% for error in form.cafe.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="form-group">
+        {{form.location.label}} 
+        {{form.location(class='form-control')}}
+        {% if form.location.errors %}
+          {% for error in form.location.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="form-group">
+        {{form.opened.label}} 
+        {{form.opened(class='form-control')}} 
+        {% if form.opened.errors %}
+          {% for error in form.opened.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="form-group">
+        {{form.close.label}}
+        {{form.close(class='form-control')}}
+        {% if form.close.errors %}
+          {% for error in form.close.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="form-group">
+        {{form.coffe.label}}
+        {{form.coffe(class='form-control')}}
+        {% if form.coffe.errors %}
+          {% for error in form.coffe.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="form-group">
+        {{form.wifi.label}}
+        {{form.wifi(class='form-control')}}
+        {% if form.wifi.errors %}
+          {% for error in form.wifi.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="form-group">
+        {{form.power.label}}
+        {{form.power(class='form-control')}}
+        {% if form.power.errors %}
+          {% for error in form.power.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
+        {% endif %}
+      </div>
+        {{form.submit(class='btn btn-primary btn-lg btn-block')}}
+    </form>
     </div>
   </div>
 </div>
