@@ -23,20 +23,29 @@
       <p><a href="#">Return to index page</a></p>
 
       <table class="table">
-        <tbody>
-          {% if cafes %}
+        <thead>
+          <tr>
             {% for place in cafes %}
-              <tr>
-                {% for cafe in place %}
-                  <td>{{ cafe }}</td>
-                {% endfor %}
-              </tr>
+              {% if place[0] %}
+                <th>{{ place[0] }}</th>
+              {% endif %}
             {% endfor %}
-          {% else %}
-            <tr>
-              <td>No places for you friend... :(</td>
-            </tr>
-          {% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {% for place in cafes %}
+                {% for cafe in place %}
+                  {% if place[0] %}
+                    <p></p>
+                  {% else %}
+                  <td>{{ cafe }}</td>
+                  {% endif %}
+                {% endfor %}
+            {% endfor %}
+
+            <td></td>
+          </tr>
         </tbody>
       </table>
 

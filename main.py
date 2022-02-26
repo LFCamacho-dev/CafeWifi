@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, SelectField
 from wtforms.validators import DataRequired, URL
 import csv
 
@@ -11,13 +11,20 @@ Bootstrap(app)
 
 
 class CafeForm(FlaskForm):
-    cafe = StringField('Cafe name', validators=[DataRequired(), URL()])
-    location = StringField('Location', validators=[DataRequired(), URL()])
+    cafe = StringField('Cafe name', validators=[DataRequired()])
+    location = StringField('Location', validators=[DataRequired(), URL(require_tld=True,
+                                                                       message='Not a valid URL')])
     opened = StringField('Open', validators=[DataRequired()])
     close = StringField('Close', validators=[DataRequired()])
-    coffe = StringField('Coffe', validators=[DataRequired()])
-    wifi = StringField('Wifi', validators=[DataRequired()])
-    power = StringField('Power', validators=[DataRequired()])
+    coffe = SelectField('Coffe',
+                        validators=[DataRequired()],
+                        choices=['','☕','☕☕','☕☕☕','☕☕☕☕','☕☕☕☕☕'])
+    wifi = SelectField('Wifi',
+                       validators=[DataRequired()],
+                       choices=['','💪','💪💪','💪💪💪','💪💪💪💪','💪💪💪💪💪'])
+    power = SelectField('Power',
+                        validators=[DataRequired()],
+                        choices=['','🔌','🔌🔌','🔌🔌🔌','🔌🔌🔌🔌','🔌🔌🔌🔌🔌'])
     submit = SubmitField('Submit')
 
 # Exercise:
@@ -37,22 +44,18 @@ def home():
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_cafe():
-    # Exercise:
-    # Make the form write a new row into cafe-data.csv
-    # with   if form.validate_on_submit()
     form = CafeForm()
-    if request.method == 'GET':
-        return render_template('add.html', form=form)
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            cafe = form.cafe.data
-            location = form.location.data
-            opened = form.opened.data
-            close = form.close.data
-            coffe = form.coffe.data
-            wifi = form.wifi.data
-            power = form.power.data
-            return render_template('add.html', form=form)
+    if form.validate_on_submit():
+        cafe = request.form['cafe']
+        location = request.form['location']
+        opened = request.form['oppend']
+        close = request.form['close']
+        coffe = request.form['coffe']
+        wifi = request.form['wifi']
+        power = request.form['power']
+        add_cafe_form = [cafe, location, opened, close, coffe, wifi, power]
+        print(add_cafe_form)
+        return redirect('/cafes')
     return render_template('add.html', form=form)
 
 
